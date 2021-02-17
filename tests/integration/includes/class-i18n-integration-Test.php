@@ -6,7 +6,7 @@
  * @author  BrianHenryIE <BrianHenryIE@gmail.com>
  */
 
-namespace BH_WP_PrintNode\includes;
+namespace BrianHenryIE\WP_PrintNode\Includes;
 
 /**
  * Class BH_WP_PrintNode_Test

@@ -12,7 +12,7 @@
  * @subpackage BH_WP_PrintNode/includes
  */
 
-namespace BH_WP_PrintNode\includes;
+namespace BrianHenryIE\WP_PrintNode\Includes;
 
 /**
  * Define the internationalization functionality.
@@ -39,7 +39,7 @@ class I18n {
 		load_plugin_textdomain(
 			'bh-wp-printnode',
 			false,
-			dirname( plugin_basename( __FILE__ ), 2 ) . '/languages/'
+			dirname( plugin_basename( __FILE__ ), 2 ) . '/Languages/'
 		);
 
 	}

@@ -9,7 +9,7 @@
  * @subpackage BH_WP_PrintNode/includes
  */
 
-namespace BH_WP_PrintNode\includes;
+namespace BrianHenryIE\WP_PrintNode\Includes;
 
 /**
  * Fired during plugin deactivation.

@@ -13,23 +13,25 @@
  *
  * @wordpress-plugin
  * Plugin Name:       BH WP PrintNode
- * Plugin URI:        http://github.com/username/bh-wp-printnode/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin URI:        http://github.com/brianhenryie/bh-wp-printnode/
+ * Description:       Simple PrintNode client for WordPress. Offers to print PDFs via PrintNode when opening them. Provides API to other plugins.
  * Version:           1.0.0
  * Author:            BrianHenryIE
  * Author URI:        http://example.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       bh-wp-printnode
- * Domain Path:       /languages
+ * Domain Path:       /Languages
  */
 
-namespace BH_WP_PrintNode;
+namespace BrianHenryIE\WP_PrintNode;
 
-use BH_WP_PrintNode\includes\Activator;
-use BH_WP_PrintNode\includes\Deactivator;
-use BH_WP_PrintNode\includes\BH_WP_PrintNode;
-use BH_WP_PrintNode\BrianHenryIE\WPPB\WPPB_Loader;
+use BrianHenryIE\WP_PrintNode\API\API;
+use BrianHenryIE\WP_PrintNode\API\Settings;
+use BrianHenryIE\WP_PrintNode\Includes\Activator;
+use BrianHenryIE\WP_PrintNode\Includes\Deactivator;
+use BrianHenryIE\WP_PrintNode\Includes\BH_WP_PrintNode;
+use BrianHenryIE\WP_PrintNode\Mozart\Psr\BrianHenryIE\WP_Logger\Logger;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -76,17 +78,19 @@ register_deactivation_hook( __FILE__, 'BH_WP_PrintNode\deactivate_bh_wp_printnod
  *
  * @since    1.0.0
  */
-function instantiate_bh_wp_printnode(): BH_WP_PrintNode {
+function instantiate_bh_wp_printnode(): API {
 
-	$loader = new WPPB_Loader();
-	$plugin = new BH_WP_PrintNode( $loader );
+	$settings = new Settings();
+	$logger   = Logger::instance( $settings );
+	$api      = new API( $settings, $logger );
 
-	return $plugin;
+	$plugin = new BH_WP_PrintNode( $api, $settings, $logger );
+
+	return $api;
 }
 
 /**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and frontend-facing site hooks.
+ * @var BrianHenryIE\WP_PrintNode\API\API_Interface
  */
-$GLOBALS['bh_wp_printnode'] = $bh_wp_printnode = instantiate_bh_wp_printnode();
-$bh_wp_printnode->run();
+$GLOBALS['bh_wp_printnode'] = instantiate_bh_wp_printnode();
+

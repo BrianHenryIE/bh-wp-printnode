@@ -6,9 +6,9 @@
  * @author  BrianHenryIE <BrianHenryIE@gmail.com>
  */
 
-namespace BH_WP_PrintNode;
+namespace BrianHenryIE\WP_PrintNode;
 
-use BH_WP_PrintNode\includes\BH_WP_PrintNode;
+ use BrianHenryIE\WP_PrintNode\Includes\BH_WP_PrintNode;
 
 /**
  * Class Plugin_WP_Mock_Test

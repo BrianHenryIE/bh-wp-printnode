@@ -6,9 +6,10 @@
  * @author  BrianHenryIE <BrianHenryIE@gmail.com>
  */
 
-namespace BH_WP_PrintNode;
+namespace BH_WP_PrintNode\Includes;
 
-use BH_WP_PrintNode\includes\BH_WP_PrintNode;
+ use BrianHenryIE\WP_PrintNode\API\API;
+ use BrianHenryIE\WP_PrintNode\Includes\BH_WP_PrintNode;
 
 /**
  * Class Plugin_WP_Mock_Test
@@ -50,11 +51,22 @@ class Plugin_Unit_Test extends \Codeception\Test\Unit {
 			'register_deactivation_hook'
 		);
 
+		\WP_Mock::userFunction(
+			'get_current_user_id'
+		);
+
+		\WP_Mock::userFunction(
+			'wp_normalize_path',
+			array(
+				'return_arg' => true
+			)
+		);
+
 		require_once $plugin_root_dir . '/bh-wp-printnode.php';
 
 		$this->assertArrayHasKey( 'bh_wp_printnode', $GLOBALS );
 
-		$this->assertInstanceOf( BH_WP_PrintNode::class, $GLOBALS['bh_wp_printnode'] );
+		$this->assertInstanceOf( API::class, $GLOBALS['bh_wp_printnode'] );
 
 	}
 

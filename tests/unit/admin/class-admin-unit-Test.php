@@ -8,12 +8,16 @@
  * @author Brian Henry <BrianHenryIE@gmail.com>
  */
 
-namespace BH_WP_PrintNode\admin;
+namespace BrianHenryIE\WP_PrintNode\Admin;
+
+use BrianHenryIE\WP_PrintNode\API\Settings;
+use BrianHenryIE\WP_PrintNode\API\Settings_Interface;
+use BrianHenryIE\WP_PrintNode\Mozart\Psr\Psr\Log\NullLogger;
 
 /**
  * Class Admin_Test
  *
- * @covers \BH_WP_PrintNode\admin\Admin
+ * @covers \BH_WP_PrintNode\Admin\Admin
  */
 class Admin_Test extends \Codeception\Test\Unit {
 
@@ -70,7 +74,10 @@ class Admin_Test extends \Codeception\Test\Unit {
 			)
 		);
 
-		$admin = new Admin( $this->plugin_name, $this->version );
+		$settings = $this->make( Settings::class );
+		$logger = new NullLogger();
+
+		$admin = new Admin( $settings, $logger );
 
 		$admin->enqueue_styles();
 
@@ -110,7 +117,12 @@ class Admin_Test extends \Codeception\Test\Unit {
 			)
 		);
 
-		$admin = new Admin( $this->plugin_name, $this->version );
+
+
+		$settings = $this->make( Settings::class );
+		$logger = new NullLogger();
+
+		$admin = new Admin( $settings, $logger );
 
 		$admin->enqueue_scripts();
 

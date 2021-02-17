@@ -4,10 +4,12 @@
  * @author  BrianHenryIE <BrianHenryIE@gmail.com>
  */
 
-namespace BH_WP_PrintNode\includes;
+namespace BrianHenryIE\WP_PrintNode\Includes;
 
-use BH_WP_PrintNode\admin\Admin;
-use BH_WP_PrintNode\frontend\Frontend;
+use BrianHenryIE\WP_PrintNode\Admin\Admin;
+use BrianHenryIE\WP_PrintNode\API\API_Interface;
+use BrianHenryIE\WP_PrintNode\API\Settings_Interface;
+use BrianHenryIE\WP_PrintNode\Mozart\Psr\Psr\Log\NullLogger;
 use WP_Mock\Matcher\AnyInstance;
 
 /**
@@ -35,7 +37,11 @@ class BH_WP_PrintNode_Unit_Test extends \Codeception\Test\Unit {
 			array( new AnyInstance( I18n::class ), 'load_plugin_textdomain' )
 		);
 
-		new BH_WP_PrintNode();
+		$api = $this->makeEmpty( API_Interface::class );
+		$settings = $this->makeEmpty( Settings_Interface::class );
+		$logger = new NullLogger();
+
+		new BH_WP_PrintNode( $api, $settings, $logger );
 	}
 
 	/**
@@ -53,25 +59,13 @@ class BH_WP_PrintNode_Unit_Test extends \Codeception\Test\Unit {
 			array( new AnyInstance( Admin::class ), 'enqueue_scripts' )
 		);
 
-		new BH_WP_PrintNode();
+//		$this->createEmpty
+
+
+		$api = $this->makeEmpty( API_Interface::class );
+		$settings = $this->makeEmpty( Settings_Interface::class );
+		$logger = new NullLogger();
+
+		new BH_WP_PrintNode( $api, $settings, $logger );
 	}
-
-	/**
-	 * @covers BH_WP_PrintNode::define_frontend_hooks
-	 */
-	public function test_frontend_hooks() {
-
-		\WP_Mock::expectActionAdded(
-			'wp_enqueue_scripts',
-			array( new AnyInstance( Frontend::class ), 'enqueue_styles' )
-		);
-
-		\WP_Mock::expectActionAdded(
-			'wp_enqueue_scripts',
-			array( new AnyInstance( Frontend::class ), 'enqueue_scripts' )
-		);
-
-		new BH_WP_PrintNode();
-	}
-
 }

@@ -6,9 +6,10 @@
  * @author     BrianHenryIE <BrianHenryIE@gmail.com>
  */
 
-namespace BH_WP_PrintNode;
+namespace BrianHenryIE\WP_PrintNode;
 
-use BH_WP_PrintNode\includes\BH_WP_PrintNode;
+ use BrianHenryIE\WP_PrintNode\API\API;
+ use BrianHenryIE\WP_PrintNode\Includes\BH_WP_PrintNode;
 
 /**
  * Verifies the plugin has been instantiated and added to PHP's $GLOBALS variable.
@@ -22,7 +23,7 @@ class Plugin_Integration_Test extends \Codeception\TestCase\WPTestCase {
 
 		$this->assertArrayHasKey( 'bh_wp_printnode', $GLOBALS );
 
-		$this->assertInstanceOf( BH_WP_PrintNode::class, $GLOBALS['bh_wp_printnode'] );
+		$this->assertInstanceOf( API::class, $GLOBALS['bh_wp_printnode'] );
 	}
 
 }

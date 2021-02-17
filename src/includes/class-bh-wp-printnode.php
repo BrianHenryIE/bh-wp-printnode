@@ -12,12 +12,9 @@
  * @subpackage BH_WP_PrintNode/includes
  */
 
-namespace BH_WP_PrintNode\includes;
+namespace BrianHenryIE\WP_PrintNode\Includes;
 
-use BH_WP_PrintNode\admin\Admin;
-use BH_WP_PrintNode\frontend\Frontend;
-use BH_WP_PrintNode\BrianHenryIE\WPPB\WPPB_Loader_Interface;
-use BH_WP_PrintNode\BrianHenryIE\WPPB\WPPB_Plugin_Abstract;
+use BrianHenryIE\WP_PrintNode\Admin\Admin;
 
 /**
  * The core plugin class.
@@ -33,7 +30,7 @@ use BH_WP_PrintNode\BrianHenryIE\WPPB\WPPB_Plugin_Abstract;
  * @subpackage BH_WP_PrintNode/includes
  * @author     BrianHenryIE <BrianHenryIE@gmail.com>
  */
-class BH_WP_PrintNode extends WPPB_Plugin_Abstract {
+class BH_WP_PrintNode {
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -43,10 +40,8 @@ class BH_WP_PrintNode extends WPPB_Plugin_Abstract {
 	 * the frontend-facing side of the site.
 	 *
 	 * @since    1.0.0
-	 *
-	 * @param WPPB_Loader_Interface $loader The WPPB class which adds the hooks and filters to WordPress.
 	 */
-	public function __construct( $loader ) {
+	public function __construct( $api, $settings, $logger ) {
 		if ( defined( 'BH_WP_PRINTNODE_VERSION' ) ) {
 			$version = BH_WP_PRINTNODE_VERSION;
 		} else {
@@ -54,11 +49,12 @@ class BH_WP_PrintNode extends WPPB_Plugin_Abstract {
 		}
 		$plugin_name = 'bh-wp-printnode';
 
-		parent::__construct( $loader, $plugin_name, $version );
+		$this->logger   = $logger;
+		$this->settings = $settings;
+		$this->api      = $api;
 
 		$this->set_locale();
 		$this->define_admin_hooks();
-		$this->define_frontend_hooks();
 
 	}
 
@@ -75,7 +71,7 @@ class BH_WP_PrintNode extends WPPB_Plugin_Abstract {
 
 		$plugin_i18n = new I18n();
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+		add_action( 'plugins_loaded', array( $plugin_i18n, 'load_plugin_textdomain' ) );
 
 	}
 
@@ -88,26 +84,11 @@ class BH_WP_PrintNode extends WPPB_Plugin_Abstract {
 	 */
 	protected function define_admin_hooks(): void {
 
-		$plugin_admin = new Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Admin( $this->settings, $this->logger );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
-	}
-
-	/**
-	 * Register all of the hooks related to the public-facing functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	protected function define_frontend_hooks(): void {
-
-		$plugin_frontend = new Frontend( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_frontend, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_frontend, 'enqueue_scripts' );
+		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $plugin_admin, 'enqueue_scripts' ) );
 
 	}
+
 }
